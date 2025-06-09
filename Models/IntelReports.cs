@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Malshinon.Models
 {
-    internal class IntelReports
+    public class IntelReports
     {
+        public int Id { get; set; }
+        public int ReporterId { get; set; }
+        public int TargetId { get; set; }
+        public string Text { get; set; }
+        public string TimeStamp { get; set; }
     }
 }

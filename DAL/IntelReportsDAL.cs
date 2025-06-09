@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Malshinon.DAL
 {
-    public class PeopleDAL
+    public class IntelReportsDAL
     {
     }
 }
