@@ -50,5 +50,39 @@ namespace Malshinon.DAL
                 throw new Exception(ex.Message);
             }
         }
+        public People SearchPersonBySecretCode(string secretCode)
+        {
+            MySqlConnection? conn = null;
+            try
+            {
+                conn = _mySQL.GetConnection();
+                MySqlCommand cmd = new MySqlCommand($"SELECT * FROM people WHERE secret_code.id = '{secretCode}';", conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    reader.Read();
+
+                    int ID = reader.GetInt32("id");
+                    string firstName = reader.GetString("first_name");
+                    string lastName = reader.GetString("last_name");
+                    string SecretCode = reader.GetString("secret_code");
+                    string type = reader.GetString("type");
+                    int numReport = reader.GetInt32("num_report");
+                    int numMentions = reader.GetInt32("num_mentions");
+                    People person = new People(firstName, lastName, SecretCode, type, numReport, numMentions, ID);
+                    return person;
+
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
