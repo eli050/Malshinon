@@ -9,11 +9,11 @@ namespace Malshinon.DB
 {
     public class MySQLData
     {
-        static string connectionStrinhg = "Server=localhos;Database=malshinondb;User=root;Port=3306;";
+        static string connectionString = "Server=localhos;Database=malshinondb;User=root;Port=3306;";
         public MySqlConnection? connection;
         public void Connect()
         {
-            var conn = new MySqlConnection(connectionStrinhg);
+            var conn = new MySqlConnection(connectionString);
             connection = conn;
             try
             {
@@ -29,7 +29,7 @@ namespace Malshinon.DB
         }
         public MySqlConnection? GetConnection()
         {
-            connection = new MySqlConnection(connectionStrinhg);
+            connection = new MySqlConnection(connectionString);
             try
             {
                 connection.Open();
