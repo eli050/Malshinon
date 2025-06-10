@@ -49,6 +49,13 @@ namespace Malshinon.DAL
             {
                 throw new Exception(ex.Message);
             }
+            finally
+            {
+                if (conn != null)
+                {
+                    _mySQL.CloseConnection(conn);
+                }
+            }
         }
         public People SearchPersonBySecretCode(string secretCode)
         {
@@ -56,7 +63,7 @@ namespace Malshinon.DAL
             try
             {
                 conn = _mySQL.GetConnection();
-                MySqlCommand cmd = new MySqlCommand($"SELECT * FROM people WHERE secret_code.id = '{secretCode}';", conn);
+                MySqlCommand cmd = new MySqlCommand($"SELECT * FROM people WHERE people.secret_code = '{secretCode}';", conn);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
@@ -82,6 +89,59 @@ namespace Malshinon.DAL
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    _mySQL.CloseConnection(conn);
+                }
+            }
+        }
+        public void InsertPerson(People person)
+        {
+            MySqlConnection? conn = null;
+            try
+            {
+                conn = _mySQL.GetConnection();
+                string query = $"INSERT INTO people(first_name,last_name,secret_code,type,num_report,num_mentions)" +
+                    $"VAULES('{person.FirstName}','{person.LastName}','{person.SecretCode}','{person.Type}','{person.NumReport}','{person.NumMentions}');";
+                MySqlCommand cmd = new MySqlCommand(query,conn);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    _mySQL.CloseConnection(conn);
+                }
+            }
+        }
+        public void UpdatePerson(People person)
+        {
+            MySqlConnection? conn = null;
+            try
+            {
+                conn = _mySQL.GetConnection();
+                string query = $"UPDATE people SET people.type = '{person.Type}',people.num_report = '{person.NumReport}',people.num_mentions = '{person.NumMentions}';";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    _mySQL.CloseConnection(conn);
+                }
             }
         }
     }
