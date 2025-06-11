@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Malshinon.Models;
 using Malshinon.DB;
+using Malshinon.DAL;
 
-namespace Malshinon.DAL.Controlers
+namespace Malshinon.Controlers
 {
     static public class Management
     {
@@ -50,7 +51,7 @@ namespace Malshinon.DAL.Controlers
                 Console.WriteLine("Enter last name: ");
                 string lastName = Console.ReadLine()!;
                 string typeTarget = "target";
-                Target = SignIn(firstName, lastName, secretNameR, typeTarget);
+                Target = SignIn(firstName, lastName, secretNameT, typeTarget);
                 Console.WriteLine("Great, now that it's in the system, you can continue with the report.");
             }
             else
