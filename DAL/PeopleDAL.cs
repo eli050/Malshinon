@@ -26,16 +26,7 @@ namespace Malshinon.DAL
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
-                    reader.Read();
-                    
-                    int ID = reader.GetInt32("id");
-                    string firstName = reader.GetString("first_name");
-                    string lastName = reader.GetString("last_name");
-                    string secretCode = reader.GetString("secret_code");
-                    string type = reader.GetString("type");
-                    int numReport = reader.GetInt32("num_report");
-                    int numMentions = reader.GetInt32("num_mentions");
-                    People person = new People(firstName, lastName, secretCode, type, numReport, numMentions, ID);
+                    People person = People.CreateReader(reader);
                     return person;
                     
                 }
@@ -63,20 +54,11 @@ namespace Malshinon.DAL
             try
             {
                 conn = _mySQL.GetConnection();
-                MySqlCommand cmd = new MySqlCommand($"SELECT * FROM people WHERE people.secret_code = '{secretCode}';", conn);
+                MySqlCommand cmd = new MySqlCommand($"SELECT * FROM people WHERE people.secret_name = '{secretCode}';", conn);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
-                    reader.Read();
-
-                    int ID = reader.GetInt32("id");
-                    string firstName = reader.GetString("first_name");
-                    string lastName = reader.GetString("last_name");
-                    string SecretCode = reader.GetString("secret_code");
-                    string type = reader.GetString("type");
-                    int numReport = reader.GetInt32("num_report");
-                    int numMentions = reader.GetInt32("num_mentions");
-                    People person = new People(firstName, lastName, SecretCode, type, numReport, numMentions, ID);
+                    People person = People.CreateReader(reader); 
                     return person;
 
                 }
@@ -98,16 +80,18 @@ namespace Malshinon.DAL
                 }
             }
         }
-        public void InsertPerson(People person)
+        public People InsertPerson(People person)
         {
             MySqlConnection? conn = null;
             try
             {
                 conn = _mySQL.GetConnection();
-                string query = $"INSERT INTO people(first_name,last_name,secret_code,type,num_report,num_mentions)" +
-                    $"VAULES('{person.FirstName}','{person.LastName}','{person.SecretCode}','{person.Type}','{person.NumReport}','{person.NumMentions}');";
+                string query = $"INSERT INTO people(first_name,last_name,secret_name,type,num_reports,num_mentions)" +
+                    $"VALUES('{person.FirstName}','{person.LastName}','{person.SecretCode}','{person.Type}','{person.NumReport}','{person.NumMentions}');";
                 MySqlCommand cmd = new MySqlCommand(query,conn);
                 cmd.ExecuteNonQuery();
+                People people = SearchPersonBySecretCode(person.SecretCode);
+                return people;
             }
             catch (Exception ex)
             {
@@ -121,15 +105,16 @@ namespace Malshinon.DAL
                 }
             }
         }
-        public void UpdatePerson(People person)
+        public People UpdatePerson(People person)
         {
             MySqlConnection? conn = null;
             try
             {
                 conn = _mySQL.GetConnection();
-                string query = $"UPDATE people SET people.type = '{person.Type}',people.num_report = '{person.NumReport}',people.num_mentions = '{person.NumMentions}';";
+                string query = $"UPDATE people SET people.type = '{person.Type}',people.num_reports = '{person.NumReport}',people.num_mentions = '{person.NumMentions}' WHERE people.id = {person.Id};";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.ExecuteNonQuery();
+                return person;
 
             }
             catch (Exception ex)

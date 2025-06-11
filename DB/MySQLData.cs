@@ -9,7 +9,7 @@ namespace Malshinon.DB
 {
     public class MySQLData
     {
-        static string connectionString = "Server=localhos;Database=malshinondb;User=root;Port=3306;";
+        static string connectionString = "Server=localhost;Database=malshinondb;User=root;Port=3306;";
         public MySqlConnection? connection;
         public void Connect()
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Asn1.X509;
 
 namespace Malshinon.Models
@@ -51,6 +52,19 @@ namespace Malshinon.Models
         public void IncNumMentions()
         {
             NumMentions++;
+        }
+        public static People CreateReader(MySqlDataReader reader)
+        {
+            reader.Read();
+            int ID = reader.GetInt32("id");
+            string firstName = reader.GetString("first_name");
+            string lastName = reader.GetString("last_name");
+            string SecretCode = reader.GetString("secret_name");
+            string type = reader.GetString("type");
+            int numReport = reader.GetInt32("num_reports");
+            int numMentions = reader.GetInt32("num_mentions");
+            People person = new People(firstName, lastName, SecretCode, type, numReport, numMentions, ID);
+            return person;
         }
     }
 }
