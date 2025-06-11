@@ -35,7 +35,7 @@ namespace Malshinon.Models
 
         public People(string firstname, string lastName, 
             string secretCode, string type,
-            int numReport, int numMentions, int id = 0)
+            int numReport = 0, int numMentions = 0, int id = 0)
         {
             FirstName = firstname;
             LastName = lastName;
