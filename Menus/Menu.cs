@@ -28,6 +28,9 @@ namespace Malshinon.Menus
                     case "b":
                         NotExit = false;
                         break;
+                    default:
+                        Console.WriteLine($"The option {choice} is not yet available in the menu, please select again.");
+                        break;
                 }
             }
             
