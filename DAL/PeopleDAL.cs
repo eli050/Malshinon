@@ -87,7 +87,7 @@ namespace Malshinon.DAL
             {
                 conn = _mySQL.GetConnection();
                 string query = $"INSERT INTO people(first_name,last_name,secret_name,type,num_reports,num_mentions)" +
-                    $"VALUES('{person.FirstName}','{person.LastName}','{person.SecretCode}','{person.Type}','{person.NumReport}','{person.NumMentions}');";
+                    $"VALUES('{person.FirstName}','{person.LastName}','{person.SecretCode}','{person.Type}',{person.NumReport},{person.NumMentions});";
                 MySqlCommand cmd = new MySqlCommand(query,conn);
                 cmd.ExecuteNonQuery();
                 People people = SearchPersonBySecretCode(person.SecretCode);
@@ -111,7 +111,7 @@ namespace Malshinon.DAL
             try
             {
                 conn = _mySQL.GetConnection();
-                string query = $"UPDATE people SET people.type = '{person.Type}',people.num_reports = '{person.NumReport}',people.num_mentions = '{person.NumMentions}' WHERE people.id = {person.Id};";
+                string query = $"UPDATE people SET people.type = '{person.Type}',people.num_reports = {person.NumReport},people.num_mentions = {person.NumMentions} WHERE people.id = {person.Id};";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.ExecuteNonQuery();
                 return person;
