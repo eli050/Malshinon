@@ -12,6 +12,14 @@ namespace Malshinon.Models
         public int ReporterId { get; set; }
         public int TargetId { get; set; }
         public string Text { get; set; }
-        public string TimeStamp { get; set; }
+        public DateTime? TimeStamp { get; set; }
+        public IntelReports(int reporterId,int targetId,string text,DateTime? timeStemp = null, int id = 0)
+        {
+            ReporterId = reporterId;
+            TargetId = targetId;
+            Text = text;
+            TimeStamp = timeStemp;
+            Id = id;
+        }
     }
 }

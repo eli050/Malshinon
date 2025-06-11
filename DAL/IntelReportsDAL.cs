@@ -25,7 +25,7 @@ namespace Malshinon.DAL
             {
                 conn = _mySql.GetConnection();
                 string query = $"SELECT * FROM intel_reports WHERE intel_reports.id = '{id}';";
-                MySqlCommand cmd = new MySqlCommand(query,conn);
+                MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
@@ -35,7 +35,7 @@ namespace Malshinon.DAL
                     int targetId = reader.GetInt32("target_id");
                     string text = reader.GetString("text");
                     DateTime timeStamp = reader.GetDateTime("timestamp");
-                    IntelReports intelReports = new IntelReports(reporterId,targetId,text,timeStamp,ID);
+                    IntelReports intelReports = new IntelReports(reporterId, targetId, text, timeStamp, ID);
                     return intelReports;
                 }
                 else
@@ -135,5 +135,28 @@ namespace Malshinon.DAL
                 }
             }
         }
-    }
+        public void CreateIntelReport(IntelReports report)
+        {
+            MySqlConnection? conn = null;
+            try
+            {
+                conn = _mySql.GetConnection();
+                string query = $"INSERT INTO intel_reports(reporter_id,target_id,text) " +
+                    $" VALUES ({report.ReporterId}, {report.TargetId}, '{report.Text}');";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    _mySql.CloseConnection(conn);
+                }
+            }
+        }
+    }   
 }
