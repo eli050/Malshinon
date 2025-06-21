@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Malshinon.DB;
 using Malshinon.Models;
 using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI;
 
 namespace Malshinon.DAL
 {
@@ -116,6 +117,54 @@ namespace Malshinon.DAL
                 cmd.ExecuteNonQuery();
                 return person;
 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    _mySQL.CloseConnection(conn);
+                }
+            }
+        }
+        public List<AgentReports> GetSumAndLenOfAgentReports()
+        {
+            MySqlConnection? conn = null;
+            try
+            {
+                conn = _mySQL.GetConnection();
+                string query = "SELECT people.type, people.secret_name, people.id," +
+                    " COUNT(intel_reports.reporter_id) AS sum_reprts," +
+                    " AVG( CHAR_LENGTH(intel_reports.text) )" +
+                    " AS avg_len FROM people JOIN intel_reports " +
+                    "ON intel_reports.reporter_id = people.id " +
+                    "GROUP BY people.secret_name, people.id, " +
+                    "intel_reports.text HAVING people.type = 'potential_agent';";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    List<AgentReports> agents = new List<AgentReports>();
+                    while (reader.Read())
+                    {
+                        agents.Add(new AgentReports
+                        {
+                            secretName = reader.GetString("secret_name"),
+                            numReports = reader.GetInt32("sum_reprts"),
+                            AVGLen = reader.GetDouble("avg_len")
+
+                        });
+                        
+                    }
+                    return agents;
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception ex)
             {

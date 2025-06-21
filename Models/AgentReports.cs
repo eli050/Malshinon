@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Malshinon.Models
 {
-    internal class AgentReports
+    public class AgentReports
     {
+        public string secretName { get; set; }
+        public int numReports { get; set; }
+        public double AVGLen { get; set; }
     }
 }

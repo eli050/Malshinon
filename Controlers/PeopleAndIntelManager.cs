@@ -9,7 +9,7 @@ using Malshinon.DAL;
 
 namespace Malshinon.Controlers
 {
-    static public class Management
+    static public class PeopleAndIntelManager
     {
         static private MySQLData _MySQL = new MySQLData();
         static private PeopleDAL peopleDAL = new PeopleDAL(_MySQL);

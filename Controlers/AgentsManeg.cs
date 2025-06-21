@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Malshinon.Controlers
 {
-    internal class AgentsManeg
+    public class AgentsManeg
     {
+
     }
 }

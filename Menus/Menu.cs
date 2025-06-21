@@ -23,7 +23,7 @@ namespace Malshinon.Menus
                 switch (choice)
                 {
                     case "a":
-                        Management.Control();
+                        PeopleAndIntelManager.Control();
                         break;
                     case "b":
                         NotExit = false;
